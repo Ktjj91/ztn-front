@@ -1,6 +1,7 @@
-import {Component, ElementRef, signal, ViewChild} from '@angular/core';
+import {Component, ElementRef, inject, signal, ViewChild} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {MarkdownModule} from 'ngx-markdown';
+import {NoteApiService} from '../../services/notes/note-api-service.service';
 
 @Component({
   selector: 'app-note-editor',
@@ -9,6 +10,8 @@ import {MarkdownModule} from 'ngx-markdown';
   styleUrl: './note-editor.component.css'
 })
 export class NoteEditorComponent {
+  isCreated = signal(false);
+  noteApiService: NoteApiService = inject(NoteApiService);
   markdown = signal<string>('');
   @ViewChild('editor') editor!: ElementRef<HTMLTextAreaElement>;
   insert(prefix: string,listOdered:string = ""): void {
@@ -41,6 +44,20 @@ export class NoteEditorComponent {
 
     this.markdown.set( `${before}${wrapper}${selected}${wrapper}${after}`);
     textarea.focus();
+  }
+
+  createNote(): void {
+    this.noteApiService.create(this.markdown()).subscribe(content => {
+      console.log(content);
+      if(content && this.markdown().length > 0){
+        this.isCreated.update(v => v = true);
+       setInterval(() => {
+          this.isCreated.update(v => !v);
+        },3000)
+
+      }
+
+    })
   }
 
 }

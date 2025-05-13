@@ -1,3 +1,13 @@
+@if (isCreated()){
+  <div  role="alert" class="alert alert-success">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 shrink-0 stroke-current" fill="none" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+    </svg>
+    <span>La note est créer </span>
+  </div>
+}
+
+
 <h1 class="text-4xl text-center">Nouvelle note</h1>
 
 
@@ -17,8 +27,11 @@
   <button class="btn btn-outline btn-sm" (click)="insert('1. ')">Liste numeroté</button>
 </section>
 <textarea #editor [(ngModel)]="markdown" rows="10" class="w-full p-2 border rounded"></textarea>
-
+<div class="space-x-2">
+  <button (click)="createNote()" class="btn btn-primary">Créer la note </button>
   <button class="btn" onclick="my_modal_1.showModal()">Aperçu de la note</button>
+</div>
+
   <dialog id="my_modal_1" class="modal">
     <div class="modal-box">
       <markdown   class="prose max-w-none list-disc list-inside list-decimal" [data]="markdown()"></markdown>
@@ -29,4 +42,5 @@
       </div>
     </div>
   </dialog>
+
 
